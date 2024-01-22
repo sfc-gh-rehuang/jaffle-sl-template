@@ -37,7 +37,8 @@ compute_booleans as (
         orders.*,
         count_food_items > 0 as is_food_order,
         count_drink_items > 0 as is_drink_order,
-        order_cost
+        order_cost,
+        count_order_items
 
     from orders
     
