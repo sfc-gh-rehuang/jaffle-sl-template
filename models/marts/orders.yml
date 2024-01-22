@@ -81,6 +81,9 @@ semantic_models:
       - name: order_count
         expr: 1
         agg: sum
+      - name: pct_large_order
+        expr: case when order_total >= 20 then 1 else 0 end
+        agg: average
       - name: avg_order_item_count
         expr: count_order_items
         agg: average
@@ -143,6 +146,20 @@ metrics:
     type: simple
     type_params:
       measure: order_count
+  - name: pct_large_order
+    description: "% of orders with order total over 20"
+    type: simple
+    label: "Pct Large Orders"
+    type_params:
+      measure: pct_large_order
+  - name: pct_large_order_rank
+    description: "Rank on % of orders with order total over 20"
+    type: derived
+    label: "Pct Large Orders Rank"
+    type_params:
+      expr: rank() over (order by pct_large_order desc)
+      metrics: 
+        - name: pct_large_order
   - name: food_orders
     description: Count of orders that contain food order items
     label: Food Orders
